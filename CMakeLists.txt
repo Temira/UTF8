@@ -10,4 +10,5 @@ add_executable(untitled1 main.c
         HERE.c
         NEWW.c
         2.c
+        3.c
 )
