@@ -213,7 +213,7 @@
 //    return length;
 //}
 //
-////checks the string length
+////checks the string length (how many characters there are)
 //int my_utf8_strlen(char *string){
 //    int length = 0;
 //    while(*string){

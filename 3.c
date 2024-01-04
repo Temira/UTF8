@@ -1,5 +1,23 @@
 #include <stdio.h>
 #define MAX 1000000
+
+int isUtf8_StartByte(unsigned char byte); //determines if a byte is a valid start byte
+int isUtf8_ContinuationByte(unsigned char byte); //determines if a byte is a valid continuation byte
+int hexToBinary(const char *hexa, char *binarynum); //converts hex to binary (duh)
+void printBinaryEquivalent(const unsigned char *stri);
+int checkCharLength(const unsigned char *stri); //determines how many UTF-8 Hex pairs there will be based on start byte
+int my_utf8_strlen(char *string); //uses start bytes
+int length(char *string); //uses nul to locate end of string
+int binaryToDecimal(const char *binary); //converts binary to decimal
+int determineRange(int number); //determines what range the unicode string falls into
+int fillTemp1(); //fills one byte template
+int fillTemp2(); //fills two byte template
+int fillTemp3(); //fills three byte template
+int fillTemp4(); // fills four byte template
+int codepointToUTF(const unsigned char *stri); //converts unicode codepoint to equivalent UTF-8 hex
+
+
+
 int hexToBinary(const char *hexa, char *binarynum){
     long int i = 0;
     const char *hexaPointer;
@@ -192,14 +210,13 @@ int fillTemp3(){
 int fillTemp4(){
     printf("\nt4");
 }
-int determineUnicodeRange(const unsigned char *stri) {
+int codepointToUTF(const unsigned char *stri) {
     char binary[MAX] = {0};
     hexToBinary(stri, binary);
     int i = binaryToDecimal(binary);
     //at this point, i contains the decimal equivalent of the unicode codepoint
     int range = determineRange(i);
     printf("Needs %d bytes", range);
-
     //Fill appropriate template
     if (range == 1){
         fillTemp1();
@@ -216,8 +233,6 @@ int determineUnicodeRange(const unsigned char *stri) {
     else{
         printf("no");
     }
-
-
     return 0;
 };
 
@@ -230,7 +245,7 @@ int main(void) {
 //    hexToBinary(hex3, binary);
 //    const char *character = "!";
     hexToBinary(hex3, binary);
-    determineUnicodeRange(hex3);
+    codepointToUTF(hex3);
 //    int len = checkCharLength((const unsigned char *) character);
 //    //printBinaryEquivalent((const unsigned char *) character);
 //    printf("Length of character is %d", len);
