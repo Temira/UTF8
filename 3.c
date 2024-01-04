@@ -264,7 +264,6 @@ int fillTemp1(unsigned char * binaryNum, unsigned char * newNumber){
 }
 
 int fillTemp2(unsigned char * binaryNum, unsigned char * newNumber){
-    printf("\n2\n");
     //get significant numbers to make sure it fits into the template
     stripLeadingZeros(binaryNum);
     //should be a binary of length 11 for it to fit well into the template
@@ -272,22 +271,92 @@ int fillTemp2(unsigned char * binaryNum, unsigned char * newNumber){
     newNumber[0] = '1';
     newNumber[1] = '1';
     newNumber[2] = '0';
-    for (int i = 0, j = 3; i < 6; j++, i++){
+    for (int i = 0, j = 3; i < 5; j++, i++){
         newNumber[j] = binaryNum[i];
     }
     newNumber[8] = '1';
     newNumber[9] = '0';
-    for (int i = 6, j = 10; i < 12; j++, i++){
+    for (int i = 5, j = 10; i < 12; j++, i++){
         newNumber[j] = binaryNum[i];
     }
-    newNumber[8] ='\0';
+    newNumber[17] ='\0';
     return 0;
 }
-int fillTemp3(){
-    printf("\nt3");
+int fillTemp3(unsigned char * binaryNum, unsigned char * newNumber){
+    //get significant numbers to make sure it fits into the template
+    stripLeadingZeros(binaryNum);
+    //should be a binary of length 11 for it to fit well into the template
+    addLeadingZeros(binaryNum, 16);
+    newNumber[0] = '1';
+    newNumber[1] = '1';
+    newNumber[2] = '1';
+    newNumber[3] = '0';
+    printf("%s", newNumber);
+    for (int i = 0, j = 4; i < 4; j++, i++){
+        newNumber[j] = binaryNum[i];
+        printf("%s", newNumber);
+    }
+    newNumber[8] = '1';
+    newNumber[9] = '0';
+    printf("%s", newNumber);
+    for (int i = 5, j = 10; i < 12; j++, i++){
+        newNumber[j] = binaryNum[i];
+        printf("%s", newNumber);
+    }
+    newNumber[16] = '1';
+    newNumber[17] = '0';
+    printf("%s", newNumber);
+    for (int i = 12, j = 18; i < 17; j++, i++){
+        newNumber[j] = binaryNum[i];
+        printf("%s", newNumber);
+    }
+    newNumber[25] ='\0';
+    return 0;
 }
-int fillTemp4(){
-    printf("\nt4");
+int fillTemp4(unsigned char * binaryNum, unsigned char * newNumber){
+    // this was PAINFULLLLLL to write
+    //get significant numbers to make sure it fits into the template
+    printf("\nog %s", binaryNum);
+    stripLeadingZeros(binaryNum);
+    printf("\nstrip %s", binaryNum);
+    //should be a binary of length 11 for it to fit well into the template
+    addLeadingZeros(binaryNum, 21);
+    printf("\nadd %s", binaryNum);
+    newNumber[0] = '1';
+    newNumber[1] = '1';
+    newNumber[2] = '1';
+    newNumber[3] = '1';
+    newNumber[4] = '0';
+    printf("\nnew ten %s", newNumber);
+    for (int i = 0, j = 5; i < 3; j++, i++){
+        newNumber[j] = binaryNum[i];
+
+        printf("\nnew %s", newNumber);
+    }
+    newNumber[8] = '1';
+    newNumber[9] = '0';
+    printf("\nnew ten %s", newNumber);
+    for (int i = 3, j = 10; i < 9; j++, i++){
+        printf("\n%d  %c", i, binaryNum[i]);
+        newNumber[j] = binaryNum[i];
+        printf("\nnew %s", newNumber);
+    }
+    newNumber[16] = '1';
+    newNumber[17] = '0';
+    printf("\nnew ten %s", newNumber);
+    for (int i = 9, j = 18; i < 15; j++, i++){
+        newNumber[j] = binaryNum[i];
+        printf("\nnew %s", newNumber);
+    }
+    newNumber[24] = '1';
+    newNumber[25] = '0';
+    printf("\nnew %s", newNumber);
+    for (int i = 15, j = 26; i < 23; j++, i++){
+        newNumber[j] = binaryNum[i];
+        printf("\nnew %s", newNumber);
+    }
+    newNumber[40] ='\0';
+    return 0;
 }
 int codepointToUTF(const unsigned char *stri) {
     unsigned char binary[MAX] = {0};
@@ -304,17 +373,21 @@ int codepointToUTF(const unsigned char *stri) {
     }
     else if (range == 2){
         fillTemp2(binary, newBinary);
-        printf("new %s", newBinary);
+        printf("\nnew %s", newBinary);
     }
     else if (range == 3){
-        fillTemp3();
+        fillTemp3(binary, newBinary);
+        printf("\nnew %s", newBinary);
     }
     else if (range == 4){
-        fillTemp4();
+        fillTemp4(binary, newBinary);
+        printf("\nnew %s", newBinary);
     }
     else{
         printf("no");
     }
+
+
     return 0;
 };
 
@@ -323,7 +396,7 @@ int main(void) {
 //
 //    const char* hex1 = "1F";
 //    const char* hex2 = "0x2A";
-    const char* hex3 = "\\u0081";
+    const char* hex3 = "\\u10348";
 //    hexToBinary(hex3, binary);
 //    const char *character = "!";
     //hexToBinary(hex3, binary);
