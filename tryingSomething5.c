@@ -69,29 +69,7 @@
 ////}
 ////
 ////// Function to print the UTF-8 encoding of a string
-////void print_utf8_encoding(const char *str) {
-////    while (*str) {
-////        if (isUtf8_StartByte(*str)) {
-////            // Determine the length
-////            int length = check_Char_length((char *)str);
-////
-////            // Print the entire UTF-8 encoding for each character on a single line
-////            printf("UTF-8 encoding: ");
-////
-////            // Print the bytes of the UTF-8 encoding
-////            for (int i = 0; i < length && *str; ++i) {
-////                printf("0x%x ", (unsigned char)str[i]);
-////            }
-////            printf("\n");
-////
-////            // Move to the next character
-////            str += length;
-////        } else {
-////            // Skip continuation bytes
-////            ++str;
-////        }
-////    }
-////}
+
 ////
 ////// Function to check the validity of UTF-8 encoding
 ////int my_utf8_check(const char *str) {

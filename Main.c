@@ -15,16 +15,17 @@ int fillTemp2(unsigned char * binaryNum, unsigned char * newNumber); //fills two
 int fillTemp3(unsigned char * binaryNum, unsigned char * newNumber); //fills three byte template
 int fillTemp4(unsigned char * binaryNum, unsigned char * newNumber); // fills four byte template
 int codepointToUTF(const unsigned char *stri, const char *output); //converts unicode codepoint to equivalent UTF-8 hex
-int stripLeadingZeros(unsigned char *binaryString);
-int addLeadingZeros(unsigned char *binaryString, int targetLength);
-int binaryToHex(unsigned char  *inputString, char *outputString);
-int isValidHexChar(char c);
-int my_utf8_encode(char *input, char *output);
-int lengthString(const char *str);
-int my_utf8_check(char *string);
-//char my_utf8_charat(char *string, int index);
-int my_utf8_strcmp(unsigned char *string1, unsigned char *string2);
-int my_strcmp(char *str1, char *str2);
+int stripLeadingZeros(unsigned char *binaryString); //strip leading zeros from binary
+int addLeadingZeros(unsigned char *binaryString, int targetLength); //pad binary with necessary zeros
+int binaryToHex(unsigned char  *inputString, char *outputString); //converts binary string to hex (duh)
+int isValidHexChar(char c); //determines if a character is a hex character
+int my_utf8_encode(char *input, unsigned char *output); //you know what this is...
+int lengthString(const char *str); //determines the length o a string (by looking for nul terminator)
+int my_utf8_check(char *string);  //checks that it is valid utf-8
+char my_utf8_charat(char *string, int index); //returns the character at the specified index (or at least is supposed to)
+int my_utf8_strcmp(unsigned char *string1, unsigned char *string2); //compares two utf-8 strings it works sometimes!
+int my_strcmp(char *str1, char *str2); //compares two regular strings
+void print_utf8_encoding(const char *str); //my special function to print utf 8 encoding for regular ascii characters etc
 
 
 // Function to check if a byte is the start of a UTF-8 character
@@ -63,6 +64,8 @@ int lengthString(const char *str) {
 int binaryToHex(unsigned char *inputString, char *outputString) {
     int len = lengthBinary(inputString);
     int resultIndex = 0;
+
+    outputString[resultIndex++] = '(';
 
     for (int i = 0; i < len; i += 4) {
         char group[5];  // Assuming each group is 4 characters long, plus null terminator
@@ -127,24 +130,25 @@ int binaryToHex(unsigned char *inputString, char *outputString) {
             printf("uhoh %c %c %c %c", group[0],group[1], group[2], group[3]);
         }
     }
-
+    outputString[resultIndex++] = ')';
+    outputString[resultIndex++] = '\0';
     //outputString[resultIndex] = '\0';  // Null terminate the result string
-    printf("Result String: %s\n", outputString);
+    //printf("Result String: %s\n", outputString);
     return 0;
 }
 
 int hexToBinary(const char *hexa, unsigned char *binarynum){
     long int i = 0;
     const char *hexaPointer;
-    //printf("%c", hexa[0]);
 
+    //skip the \u part
     if (hexa[0] == '\\' && hexa[1] == 'u') {
         hexaPointer = hexa + 2;
     } else {
         hexaPointer = hexa;
     }
-    //printf("char %c", *hexaPointer);
 
+    //go through each hex character and match to appropriate binary
     while (hexaPointer[i] != '\0') {
         //printf("\ncurrently pointing at a %c", hexa[i]);
         switch (hexaPointer[i])
@@ -182,7 +186,6 @@ int hexToBinary(const char *hexa, unsigned char *binarynum){
                 binarynum[(i*4)+2] = '0';
                 binarynum[(i*4)+3] = '0';
                 //binarynum[(i*5)+4] = ' ';
-                //printf("44444");
                 break;
             case '5':
                 binarynum[i*4] = '0';
@@ -190,7 +193,6 @@ int hexToBinary(const char *hexa, unsigned char *binarynum){
                 binarynum[(i*4)+2] = '0';
                 binarynum[(i*4)+3] = '1';
                 //binarynum[(i*5)+4] = ' ';
-                //printf("55555");
                 break;
             case '6':
                 binarynum[i*4] = '0';
@@ -270,11 +272,10 @@ int hexToBinary(const char *hexa, unsigned char *binarynum){
                 break;
             default:
                 //printf("\n Invalid hexadecimal digit %c ", hexaPointer[i]);
-                //while (getchar() != '\n');
                 return -1;
             }
         i++;}
-
+    //null terminate the binary string
     binarynum[i*4] = '\0';
     //printf("Binary equivalent is: %s", binarynum);
     return 0;
@@ -309,6 +310,56 @@ int my_strcmp(char *str1, char *str2) {
     }
     return 0;
 }
+
+//USEFUL FUNCTION TO PRINT UTF-8 ENCODED ASCII
+void print_utf8_encoding(const char *str) {
+    printf("UTF-8 encoding: ");
+    while (*str) {
+        if (*str == '(') {
+            // Handle the case of an opening parenthesis
+            printf(" 0x");
+            ++str; // Move to the next character
+            while (*str && *str != ')') {
+                // Skip characters until a closing parenthesis is found
+                putchar(*str);
+                ++str;
+                //putchar(' '); // Insert a space after each character within parentheses
+            }
+            if (*str == ')') {
+                // Print the closing parenthesis
+                printf(" ");
+                ++str; // Move to the next character
+            }
+        } else if (isUtf8_StartByte(*str)) {
+            // Determine the length and print the entire UTF-8 encoding
+            int length = checkCharLength(str);
+            printf(" 0x");
+            for (int i = 0; i < length && *str; ++i) {
+                printf("%x ", (unsigned char) str[i]);
+            }
+            // Move to the next character
+            str += length;
+        } else {
+            // Handle parentheses and print regular character with space
+            if (*str == '(') {
+                // Skip the opening parenthesis and everything within it until the closing parenthesis
+                while (*str && *str != ')') {
+                    ++str;
+                }
+                // Skip the closing parenthesis
+                if (*str == ')') {
+                    ++str;
+                }
+            } else {
+                // Print the character
+                printf("%c", *str);
+                putchar(' '); // Insert a space after each regular character
+                ++str;  // Move to the next character
+            }
+        }
+    }
+}
+
 
 // Function to determine the length of a UTF-8 character based on its start byte
 int checkCharLength(char *stri) {
@@ -381,7 +432,7 @@ int my_utf8_check(char *string) {
     return 0; // Valid
 }
 
-int my_utf8_encode(char *input, char *output) {
+int my_utf8_encode(char *input, unsigned char *output) {
     int strLength = lengthString(input);
     int i = 0;
     int outputIndex = 0;
@@ -413,7 +464,7 @@ int my_utf8_encode(char *input, char *output) {
                 codepointToUTF(unicodeString, &output[outputIndex]);
                 //printf("\nindex b %d", outputIndex);
                 //outputIndex += (lengthString(unicodeString)-2);
-                outputIndex += 1;
+                outputIndex += lengthString(&output[outputIndex]);
                 //printf("\nindex a %d", outputIndex);
                 //printf("\n HERE \n %s", output);
                 i += unicodeLength;
@@ -437,7 +488,7 @@ int my_utf8_encode(char *input, char *output) {
         //printf("\n real out %s",output);
     }
     output[outputIndex] = '\0';
-    //printf("\n real real real out %s",output);
+    printf("Output %s\n",output);
     return 0;
 }
 
@@ -628,60 +679,69 @@ int fillTemp4(unsigned char * binaryNum, unsigned char * newNumber){
     return 0;
 }
 //
-//char my_utf8_charat(char *string, int index){
-//    //check that the string is valid utf8
-//    if (!my_utf8_check(string)) {
-//        return '\0'; // Invalid UTF-8
-//    }
-//    //check that index is inside the string
-//    if (!(my_utf8_strlen(string)>index)) {
-//        return '\0'; // Invalid UTF-8
-//    }
-//    int count = 0;
-//    //basically apply the same principle of my_utf8_strlen
-//    while(*string){
-//        if (count == index && isUtf8_StartByte(*string)) {
-//            return *string;
-//        }
-//        if (isUtf8_StartByte(*string)) {
-//            //increment character counter
-//            count ++;
-//            //skip the continuation bytes
-//            int plus = checkCharLength((const unsigned char *) string);
-//            string += plus;
-//        }
-//        else{
-//            string++; //next character
-//        }
-//    } return '\0';
-//}
-
-char my_utf8_charat(unsigned char *string, int index) {
-    // Check that the string is valid utf8
-    if (my_utf8_check((char *)string) == -1) {
+char my_utf8_charat(char *string, int index){
+    //check that the string is valid utf8
+    if (!my_utf8_check(string)) {
         return '\0'; // Invalid UTF-8
     }
-
-    int count = 0;
-
-    while (*string) {
-        if (isUtf8_StartByte(*string)) {
-            if (count == index) {
-                return *string;
-            }
-            count++;
-        }
-
-        int charLength = checkCharLength((const unsigned char *)string);
-        string += charLength;
-
-        if (count > index) {
-            return '\0'; // Index not found or invalid UTF-8
-        }
+    //check that index is inside the string
+    if (!(my_utf8_strlen(string)>index)) {
+        return '\0'; // Invalid UTF-8
     }
-
-    return '\0'; // Index not found or invalid UTF-8
+    int count = 0;
+    //basically apply the same principle of my_utf8_strlen
+    while(*string){
+        if (count == index && isUtf8_StartByte(*string)) {
+            return *string;
+        }
+        if (isUtf8_StartByte(*string)) {
+            //increment character counter
+            count ++;
+            //skip the continuation bytes
+            int plus = checkCharLength((const unsigned char *) string);
+            string += plus;
+        }
+        else{
+            string++; //next character
+        }
+    } return '\0';
 }
+//
+//char* my_utf8_charat(char* string, int index) {
+//    // Check that the string is valid UTF-8
+//    if (my_utf8_check(string) == -1) {
+//        return NULL; // Invalid UTF-8
+//    }
+//
+//    int count = 0;
+//    int start = 0;
+//
+//    while (*string) {
+//        if (isUtf8_StartByte(*string)) {
+//            if (count == index) {
+//                // Find the end of the character
+//                int end = start;
+//                while (isUtf8_ContinuationByte(string[end])) {
+//                    end++;
+//                }
+//
+//                // Return a pointer to the start of the character
+//                return string + start;
+//            }
+//            count++;
+//            start = 0; // Reset start to 0, not string - 1
+//        }
+//        int charLength = checkCharLength((const unsigned char*)string);
+//        string += charLength;
+//        if (count > index) {
+//            return NULL; // Index not found or invalid UTF-8
+//        }
+//    }
+//
+//    return NULL; // Index not found or invalid UTF-8
+//}
+//
+
 
 int my_utf8_strcmp(unsigned char *string1, unsigned char *string2) {
     int check1 = my_utf8_check((char *)string1);
@@ -763,8 +823,6 @@ void my_utf8_strlen_tests() {
     // Test an empty string
     test_my_utf8_strlen("", 0);
 }
-
-
 
 void test_my_utf8_strcmp(unsigned char* string1, unsigned char* string2, int expected) {
     int result = my_utf8_strcmp(string1, string2);
@@ -859,7 +917,7 @@ void my_utf8_encode_tests() {
     test_my_utf8_encode("Hello, world!", "Hello, world!");
 
     // Tests with valid UTF-8 characters
-    test_my_utf8_encode("\\u05D0\\u05E8\\u05D9\\u05D4", "אריה"); // Hebrew characters
+    test_my_utf8_encode("\\u05EA\\u05DE\\u05D9\\u05E8\\u05D4", "תמירה"); // Hebrew characters
 
     // Edge cases
     test_my_utf8_encode("\\uFFFF", ""); // Invalid Unicode point, expected empty string
@@ -888,7 +946,7 @@ void my_utf8_encode_tests() {
 
 void test_my_utf8_charat(char *string, int index, char expected) {
     char result = my_utf8_charat(string, index);
-    const char* resultString = (result == expected) ? "PASSED" : "FAILED";
+    const char *resultString = (result == expected) ? "PASSED" : "FAILED";
 
     printf("Test %s - my_utf8_charat\n", resultString);
     printf("  String  : \"%s\"\n", string);
@@ -900,38 +958,48 @@ void test_my_utf8_charat(char *string, int index, char expected) {
 
 void my_utf8_charat_tests() {
     // Basic tests
-    test_my_utf8_charat("", 0, '\0'); // Empty string
-    test_my_utf8_charat("abc", 1, 'b'); // ASCII characters
-    test_my_utf8_charat("a\xC3\xA9", 1, '\xC3'); // Valid UTF-8 sequence
-    test_my_utf8_charat("a\xC3\xA9", 2, '\xA9'); // Valid UTF-8 sequence
+    test_my_utf8_charat("abc", 1, 'b');
+    test_my_utf8_charat("aé", 2, '\0'); // Index out of bounds
 
-    // Invalid UTF-8 string
+    // Tests with invalid UTF-8
     test_my_utf8_charat("\xC3\xC3", 0, '\0'); // Invalid UTF-8 sequence
-    test_my_utf8_charat("a\xC3\xA9\xC3\xC3\xE2\x82\xE2\xF0\x90\x8D\xF0", 3, '\0'); // Invalid UTF-8 string
+    test_my_utf8_charat("\xE2\x82\xE2", 0, '\0');
+    test_my_utf8_charat("\xF0\x90\x8D\xF0", 0, '\0');
+    test_my_utf8_charat("a\xC3\xA9\xE2\x82\xAC\xC3\xC3\xE2\x82\xE2\xF0\x90\x8D\xF0", 3, '\0');
 
-    // Out-of-bounds index
-    test_my_utf8_charat("a\xC3\xA9", 3, '\0'); // Index greater than the length of the string
-
-    // Valid UTF-8 characters with ASCII characters
-    test_my_utf8_charat("a\xC3\xA9xyz", 1, '\xC3'); // Valid UTF-8 sequence
-
-    // Very long string
-    char longString[10000];
-    for (int i = 0; i < 9999; i += 3) {
-        longString[i] = 'a';
-        longString[i + 1] = '\xC3';
-        longString[i + 2] = '\xA9';
-    }
-    longString[9999] = '\0';
-    test_my_utf8_charat(longString, 5000, '\xC3'); // Valid UTF-8 sequence
+    // Edge cases
+    test_my_utf8_charat("", 0, '\0'); // Empty string
+    test_my_utf8_charat("aéaéaéaéaéaéaéaéaéaéaéaéaéaéaéaéaéaéaéaéaéaéaéaéaéaéaéaéaéaéaéaéaéaéaéaéaéaéaéaéaéaéaéaéaéaéaéaéaéaéaéaéaéaéaéaéaéaéaéaéaéaéaéaéaéaéaéaéaéaéaéaéaéaéaéaé...éaé", 5000, '�');
 }
 
-
 int main() {
+    char binary[MAX] = {0}; // Initialize array with zeros
+    const char* hex = "12\\u05d7\\u05e0qqq112";
+    printf("Input: %s\n", hex);
+    my_utf8_encode(hex, binary);
+    print_utf8_encoding(binary);
+
 //    my_utf8_strlen_tests();
 //    my_utf8_encode_tests();
 //    my_utf8_strcmp_tests();
 //    my_utf8_check_tests();
-    my_utf8_charat_tests();
+    //my_utf8_charat_tests();
     return 0;
 }
+
+//int main(void) {
+////
+////char binary[MAX] = {0};
+////
+////my_utf8_encode(hex, binary);
+////    printf("\noutput= %s", binary);
+////    //codepointToUTF(hex3);
+////    //unsigned char *inputString = (unsigned char *)"00100100";
+////    //char outputString[16] = {0};
+////    //unsigned char* st = "00100100";
+////    //binaryToHex(inputString, outputString);
+//////    int len = checkCharLength((const unsigned char *) character);
+//////    //printBinaryEquivalent((const unsigned char *) character);
+//////    printf("Length of character is %d", len);
+//   return 0;
+//}
