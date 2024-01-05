@@ -49,50 +49,50 @@ cmake_ninja_workdir = /Users/temirakoenig/CLionProjects/untitled1/cmake-build-de
 
 build cmake_object_order_depends_target_untitled1: phony || CMakeFiles/untitled1.dir
 
-build CMakeFiles/untitled1.dir/main.c.o: C_COMPILER__untitled1_unscanned_Debug /Users/temirakoenig/CLionProjects/untitled1/main.c || cmake_object_order_depends_target_untitled1
-  DEP_FILE = CMakeFiles/untitled1.dir/main.c.o.d
+build CMakeFiles/untitled1.dir/tryingSomething.c.o: C_COMPILER__untitled1_unscanned_Debug /Users/temirakoenig/CLionProjects/untitled1/tryingSomething.c || cmake_object_order_depends_target_untitled1
+  DEP_FILE = CMakeFiles/untitled1.dir/tryingSomething.c.o.d
   FLAGS = -g -std=gnu11 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.3.sdk -fcolor-diagnostics
   OBJECT_DIR = CMakeFiles/untitled1.dir
   OBJECT_FILE_DIR = CMakeFiles/untitled1.dir
 
-build CMakeFiles/untitled1.dir/playground.c.o: C_COMPILER__untitled1_unscanned_Debug /Users/temirakoenig/CLionProjects/untitled1/playground.c || cmake_object_order_depends_target_untitled1
-  DEP_FILE = CMakeFiles/untitled1.dir/playground.c.o.d
+build CMakeFiles/untitled1.dir/tryingSomething5.c.o: C_COMPILER__untitled1_unscanned_Debug /Users/temirakoenig/CLionProjects/untitled1/tryingSomething5.c || cmake_object_order_depends_target_untitled1
+  DEP_FILE = CMakeFiles/untitled1.dir/tryingSomething5.c.o.d
   FLAGS = -g -std=gnu11 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.3.sdk -fcolor-diagnostics
   OBJECT_DIR = CMakeFiles/untitled1.dir
   OBJECT_FILE_DIR = CMakeFiles/untitled1.dir
 
-build CMakeFiles/untitled1.dir/newnew.c.o: C_COMPILER__untitled1_unscanned_Debug /Users/temirakoenig/CLionProjects/untitled1/newnew.c || cmake_object_order_depends_target_untitled1
-  DEP_FILE = CMakeFiles/untitled1.dir/newnew.c.o.d
+build CMakeFiles/untitled1.dir/tryingSomething6.c.o: C_COMPILER__untitled1_unscanned_Debug /Users/temirakoenig/CLionProjects/untitled1/tryingSomething6.c || cmake_object_order_depends_target_untitled1
+  DEP_FILE = CMakeFiles/untitled1.dir/tryingSomething6.c.o.d
   FLAGS = -g -std=gnu11 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.3.sdk -fcolor-diagnostics
   OBJECT_DIR = CMakeFiles/untitled1.dir
   OBJECT_FILE_DIR = CMakeFiles/untitled1.dir
 
-build CMakeFiles/untitled1.dir/necessary.c.o: C_COMPILER__untitled1_unscanned_Debug /Users/temirakoenig/CLionProjects/untitled1/necessary.c || cmake_object_order_depends_target_untitled1
-  DEP_FILE = CMakeFiles/untitled1.dir/necessary.c.o.d
+build CMakeFiles/untitled1.dir/tryingSomething2.c.o: C_COMPILER__untitled1_unscanned_Debug /Users/temirakoenig/CLionProjects/untitled1/tryingSomething2.c || cmake_object_order_depends_target_untitled1
+  DEP_FILE = CMakeFiles/untitled1.dir/tryingSomething2.c.o.d
   FLAGS = -g -std=gnu11 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.3.sdk -fcolor-diagnostics
   OBJECT_DIR = CMakeFiles/untitled1.dir
   OBJECT_FILE_DIR = CMakeFiles/untitled1.dir
 
-build CMakeFiles/untitled1.dir/HERE.c.o: C_COMPILER__untitled1_unscanned_Debug /Users/temirakoenig/CLionProjects/untitled1/HERE.c || cmake_object_order_depends_target_untitled1
-  DEP_FILE = CMakeFiles/untitled1.dir/HERE.c.o.d
+build CMakeFiles/untitled1.dir/tryingSomething3.c.o: C_COMPILER__untitled1_unscanned_Debug /Users/temirakoenig/CLionProjects/untitled1/tryingSomething3.c || cmake_object_order_depends_target_untitled1
+  DEP_FILE = CMakeFiles/untitled1.dir/tryingSomething3.c.o.d
   FLAGS = -g -std=gnu11 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.3.sdk -fcolor-diagnostics
   OBJECT_DIR = CMakeFiles/untitled1.dir
   OBJECT_FILE_DIR = CMakeFiles/untitled1.dir
 
-build CMakeFiles/untitled1.dir/NEWW.c.o: C_COMPILER__untitled1_unscanned_Debug /Users/temirakoenig/CLionProjects/untitled1/NEWW.c || cmake_object_order_depends_target_untitled1
-  DEP_FILE = CMakeFiles/untitled1.dir/NEWW.c.o.d
+build CMakeFiles/untitled1.dir/tryingSomething4.c.o: C_COMPILER__untitled1_unscanned_Debug /Users/temirakoenig/CLionProjects/untitled1/tryingSomething4.c || cmake_object_order_depends_target_untitled1
+  DEP_FILE = CMakeFiles/untitled1.dir/tryingSomething4.c.o.d
   FLAGS = -g -std=gnu11 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.3.sdk -fcolor-diagnostics
   OBJECT_DIR = CMakeFiles/untitled1.dir
   OBJECT_FILE_DIR = CMakeFiles/untitled1.dir
 
-build CMakeFiles/untitled1.dir/2.c.o: C_COMPILER__untitled1_unscanned_Debug /Users/temirakoenig/CLionProjects/untitled1/2.c || cmake_object_order_depends_target_untitled1
-  DEP_FILE = CMakeFiles/untitled1.dir/2.c.o.d
+build CMakeFiles/untitled1.dir/backup.c.o: C_COMPILER__untitled1_unscanned_Debug /Users/temirakoenig/CLionProjects/untitled1/backup.c || cmake_object_order_depends_target_untitled1
+  DEP_FILE = CMakeFiles/untitled1.dir/backup.c.o.d
   FLAGS = -g -std=gnu11 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.3.sdk -fcolor-diagnostics
   OBJECT_DIR = CMakeFiles/untitled1.dir
   OBJECT_FILE_DIR = CMakeFiles/untitled1.dir
 
-build CMakeFiles/untitled1.dir/3.c.o: C_COMPILER__untitled1_unscanned_Debug /Users/temirakoenig/CLionProjects/untitled1/3.c || cmake_object_order_depends_target_untitled1
-  DEP_FILE = CMakeFiles/untitled1.dir/3.c.o.d
+build CMakeFiles/untitled1.dir/Main.c.o: C_COMPILER__untitled1_unscanned_Debug /Users/temirakoenig/CLionProjects/untitled1/Main.c || cmake_object_order_depends_target_untitled1
+  DEP_FILE = CMakeFiles/untitled1.dir/Main.c.o.d
   FLAGS = -g -std=gnu11 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.3.sdk -fcolor-diagnostics
   OBJECT_DIR = CMakeFiles/untitled1.dir
   OBJECT_FILE_DIR = CMakeFiles/untitled1.dir
@@ -105,7 +105,7 @@ build CMakeFiles/untitled1.dir/3.c.o: C_COMPILER__untitled1_unscanned_Debug /Use
 #############################################
 # Link the executable untitled1
 
-build untitled1: C_EXECUTABLE_LINKER__untitled1_Debug CMakeFiles/untitled1.dir/main.c.o CMakeFiles/untitled1.dir/playground.c.o CMakeFiles/untitled1.dir/newnew.c.o CMakeFiles/untitled1.dir/necessary.c.o CMakeFiles/untitled1.dir/HERE.c.o CMakeFiles/untitled1.dir/NEWW.c.o CMakeFiles/untitled1.dir/2.c.o CMakeFiles/untitled1.dir/3.c.o
+build untitled1: C_EXECUTABLE_LINKER__untitled1_Debug CMakeFiles/untitled1.dir/tryingSomething.c.o CMakeFiles/untitled1.dir/tryingSomething5.c.o CMakeFiles/untitled1.dir/tryingSomething6.c.o CMakeFiles/untitled1.dir/tryingSomething2.c.o CMakeFiles/untitled1.dir/tryingSomething3.c.o CMakeFiles/untitled1.dir/tryingSomething4.c.o CMakeFiles/untitled1.dir/backup.c.o CMakeFiles/untitled1.dir/Main.c.o
   FLAGS = -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.3.sdk
   OBJECT_DIR = CMakeFiles/untitled1.dir
   POST_BUILD = :

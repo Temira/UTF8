@@ -22,7 +22,7 @@ int isValidHexChar(char c);
 int my_utf8_encode(char *input, char *output);
 int lengthString(const char *str);
 int my_utf8_check(char *string);
-char my_utf8_charat(char *string, int index);
+//char my_utf8_charat(char *string, int index);
 int my_utf8_strcmp(unsigned char *string1, unsigned char *string2);
 int my_strcmp(char *str1, char *str2);
 
@@ -627,33 +627,60 @@ int fillTemp4(unsigned char * binaryNum, unsigned char * newNumber){
     //newNumber[40] ='\0';
     return 0;
 }
+//
+//char my_utf8_charat(char *string, int index){
+//    //check that the string is valid utf8
+//    if (!my_utf8_check(string)) {
+//        return '\0'; // Invalid UTF-8
+//    }
+//    //check that index is inside the string
+//    if (!(my_utf8_strlen(string)>index)) {
+//        return '\0'; // Invalid UTF-8
+//    }
+//    int count = 0;
+//    //basically apply the same principle of my_utf8_strlen
+//    while(*string){
+//        if (count == index && isUtf8_StartByte(*string)) {
+//            return *string;
+//        }
+//        if (isUtf8_StartByte(*string)) {
+//            //increment character counter
+//            count ++;
+//            //skip the continuation bytes
+//            int plus = checkCharLength((const unsigned char *) string);
+//            string += plus;
+//        }
+//        else{
+//            string++; //next character
+//        }
+//    } return '\0';
+//}
 
-char my_utf8_charat(char *string, int index){
-    //check that the string is valid utf8
-    if (!my_utf8_check(string)) {
+char my_utf8_charat(unsigned char *string, int index) {
+    // Check that the string is valid utf8
+    if (my_utf8_check((char *)string) == -1) {
         return '\0'; // Invalid UTF-8
     }
-    //check that index is inside the string
-    if (!(my_utf8_strlen(string)>index)) {
-        return '\0'; // Invalid UTF-8
-    }
+
     int count = 0;
-    //basically apply the same principle of my_utf8_strlen
-    while(*string){
-        if (count == index && isUtf8_StartByte(*string)) {
-            return *string;
-        }
+
+    while (*string) {
         if (isUtf8_StartByte(*string)) {
-            //increment character counter
-            count ++;
-            //skip the continuation bytes
-            int plus = checkCharLength((const unsigned char *) string);
-            string += plus;
+            if (count == index) {
+                return *string;
+            }
+            count++;
         }
-        else{
-            string++; //next character
+
+        int charLength = checkCharLength((const unsigned char *)string);
+        string += charLength;
+
+        if (count > index) {
+            return '\0'; // Index not found or invalid UTF-8
         }
-    } return '\0';
+    }
+
+    return '\0'; // Index not found or invalid UTF-8
 }
 
 int my_utf8_strcmp(unsigned char *string1, unsigned char *string2) {
@@ -859,11 +886,52 @@ void my_utf8_encode_tests() {
     test_my_utf8_encode(longInput, ""); // Expected empty string due to invalid Unicode point
 }
 
+void test_my_utf8_charat(char *string, int index, char expected) {
+    char result = my_utf8_charat(string, index);
+    const char* resultString = (result == expected) ? "PASSED" : "FAILED";
+
+    printf("Test %s - my_utf8_charat\n", resultString);
+    printf("  String  : \"%s\"\n", string);
+    printf("  Index   : %d\n", index);
+    printf("  Expected: '%c'\n", expected);
+    printf("  Actual  : '%c'\n", result);
+    printf("\n");
+}
+
+void my_utf8_charat_tests() {
+    // Basic tests
+    test_my_utf8_charat("", 0, '\0'); // Empty string
+    test_my_utf8_charat("abc", 1, 'b'); // ASCII characters
+    test_my_utf8_charat("a\xC3\xA9", 1, '\xC3'); // Valid UTF-8 sequence
+    test_my_utf8_charat("a\xC3\xA9", 2, '\xA9'); // Valid UTF-8 sequence
+
+    // Invalid UTF-8 string
+    test_my_utf8_charat("\xC3\xC3", 0, '\0'); // Invalid UTF-8 sequence
+    test_my_utf8_charat("a\xC3\xA9\xC3\xC3\xE2\x82\xE2\xF0\x90\x8D\xF0", 3, '\0'); // Invalid UTF-8 string
+
+    // Out-of-bounds index
+    test_my_utf8_charat("a\xC3\xA9", 3, '\0'); // Index greater than the length of the string
+
+    // Valid UTF-8 characters with ASCII characters
+    test_my_utf8_charat("a\xC3\xA9xyz", 1, '\xC3'); // Valid UTF-8 sequence
+
+    // Very long string
+    char longString[10000];
+    for (int i = 0; i < 9999; i += 3) {
+        longString[i] = 'a';
+        longString[i + 1] = '\xC3';
+        longString[i + 2] = '\xA9';
+    }
+    longString[9999] = '\0';
+    test_my_utf8_charat(longString, 5000, '\xC3'); // Valid UTF-8 sequence
+}
+
 
 int main() {
-    my_utf8_strlen_tests();
-    my_utf8_encode_tests();
-    my_utf8_strcmp_tests();
-    my_utf8_check_tests();
+//    my_utf8_strlen_tests();
+//    my_utf8_encode_tests();
+//    my_utf8_strcmp_tests();
+//    my_utf8_check_tests();
+    my_utf8_charat_tests();
     return 0;
 }
