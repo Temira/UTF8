@@ -3,25 +3,25 @@
 #include <time.h>
 #define MAX 1000
 
-int binaryToHex()
-{
-        long int binaryval, hexadecimalval = 0, i = 1, remainder;
-
-        printf("Enter the binary number: ");
-        scanf("%ld", &binaryval);
-
-        //convert input binary number to decimal equivalent
-        while (binaryval != 0)
-        {
-            remainder = binaryval % 10;
-            hexadecimalval = hexadecimalval + remainder * i;
-            i = i * 2;
-            binaryval = binaryval / 10;
-        }
-        printf("dec = %ld", hexadecimalval);
-        printf("Equivalent hexadecimal value: %lX", hexadecimalval);
-        return 0;
-}
+//int binaryToHex()
+//{
+//        long int binaryval, hexadecimalval = 0, i = 1, remainder;
+//
+//        printf("Enter the binary number: ");
+//        scanf("%ld", &binaryval);
+//
+//        //convert input binary number to decimal equivalent
+//        while (binaryval != 0)
+//        {
+//            remainder = binaryval % 10;
+//            hexadecimalval = hexadecimalval + remainder * i;
+//            i = i * 2;
+//            binaryval = binaryval / 10;
+//        }
+//        printf("dec = %ld", hexadecimalval);
+//        printf("Equivalent hexadecimal value: %lX", hexadecimalval);
+//        return 0;
+//}
 
 //int hexToBinary(const char *hexa)
 //{
