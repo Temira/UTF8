@@ -1,5 +1,5 @@
 #include <stdio.h>
-#define MAX 1000000
+//#define MAX 1000000
 //#include <stdio.h>
 //
 //// Function to check if a byte is the start of a UTF-8 character

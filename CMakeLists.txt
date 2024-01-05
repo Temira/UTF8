@@ -11,4 +11,5 @@ add_executable(untitled1 main.c
         NEWW.c
         2.c
         3.c
+        testing.cpp
 )
