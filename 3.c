@@ -276,7 +276,7 @@ int fillTemp1(unsigned char * binaryNum, unsigned char * newNumber){
     for (int i=0; i<7; i++){
         newNumber[i+1] = binaryNum[i];
     }
-    newNumber[8] ='\0';
+    //newNumber[8] ='\0';
     return 0;
 }
 
@@ -296,7 +296,7 @@ int fillTemp2(unsigned char * binaryNum, unsigned char * newNumber){
     for (int i = 5, j = 10; i < 12; j++, i++){
         newNumber[j] = binaryNum[i];
     }
-    newNumber[17] ='\0';
+    //newNumber[17] ='\0';
     return 0;
 }
 int fillTemp3(unsigned char * binaryNum, unsigned char * newNumber){
@@ -323,7 +323,7 @@ int fillTemp3(unsigned char * binaryNum, unsigned char * newNumber){
     for (int i = 10, j = 18; i < 17; j++, i++){
         newNumber[j] = binaryNum[i];
     }
-    newNumber[25] ='\0';
+    //newNumber[25] ='\0';
     printf("\nres = %s\n", newNumber);
     return 0;
 }
@@ -356,7 +356,7 @@ int fillTemp4(unsigned char * binaryNum, unsigned char * newNumber){
     for (int i = 15, j = 26; i < 23; j++, i++){
         newNumber[j] = binaryNum[i];
     }
-    newNumber[40] ='\0';
+    //newNumber[40] ='\0';
     return 0;
 }
 
@@ -367,24 +367,24 @@ int codepointToUTF(const unsigned char *stri, const char *output) {
     int i = binaryToDecimal(binary);
     //at this point, i contains the decimal equivalent of the unicode codepoint
     int range = determineRange(i);
-    printf("Needs %d bytes", range);
+    printf("Needs %d bytes\n", range);
     //Fill appropriate template
     if (range == 1){
         fillTemp1(binary, newBinary);
-        printf("new %s", newBinary);
+        //printf("new %s", newBinary);
     }
     else if (range == 2){
         fillTemp2(binary, newBinary);
-        printf("\nnew %s", newBinary);
+        //printf("\nnew %s", newBinary);
     }
     else if (range == 3){
-        printf("\nbin = %s\n", binary);
+        //printf("\nbin = %s\n", binary);
         fillTemp3(binary, newBinary);
-        printf("\nbin = %s\n", newBinary);
+        //printf("\nbin = %s\n", newBinary);
     }
     else if (range == 4){
         fillTemp4(binary, newBinary);
-        printf("\nnew %s", newBinary);
+        //printf("\nnew %s", newBinary);
     }
     else{
         return -1;
@@ -462,7 +462,7 @@ int binaryToHex(unsigned char *inputString, char *outputString) {
             }
         }
 
-        outputString[resultIndex] = '\0';  // Null terminate the result string
+        //outputString[resultIndex] = '\0';  // Null terminate the result string
         printf("Result String: %s\n", outputString);
         return 0;
 }
@@ -499,27 +499,32 @@ int my_utf8_encode(char *input, char *output) {
                 unicodeString[unicodeLength] = '\0'; // Null terminate the string
 
                 // Print the entire Unicode string
-                printf("%s", unicodeString);
+                printf("\nuni %s", unicodeString);
                 codepointToUTF(unicodeString, &output[outputIndex]);
-                outputIndex += lengthString(unicodeString);
-                printf("here");
-
-            } else {
+                printf("\nindex b %d", outputIndex);
+                outputIndex += (lengthString(unicodeString)-2);
+                printf("\nindex a %d", outputIndex);
+                printf("\n HERE \n %s", output);
+                i += unicodeLength;
+            }
+            else {
                 // Handle the case where characters are not valid hex
                 printf("[INVALID_UNICODE]");
+                i++;
+                outputIndex++;
+                i += unicodeLength; // Move to the next character after the Unicode point
             }
-
-            i += unicodeLength; // Move to the next character after the Unicode point
-
-        } else {
+        }
+        else {
             output[outputIndex] = input[i];
-            printf("\n%c", input[i]);
+            //printf("\n%c", input[i]);
             i++;
             outputIndex++;
-            printf("\nout %s",output);
+            //printf("\nout %s",output);
         }
     printf("\n real out %s",output);
     }
+    output[outputIndex] = '\0';
     printf("\n real real real out %s",output);
     return 0;
 }
@@ -628,27 +633,29 @@ char my_utf8_charat(char *string, int index){
         }
     } return '\0';
 }
-int main() {
-    // Test Case 1: Valid UTF-8 string
-    char utf8String[] = "Hello, 你好, こんにちは";
-    int index1 = 8;  // Index of the character '你'
-    char result1 = my_utf8_charat(utf8String, index1);
-    printf("Test Case 1: %c\n", result1);  // Expected output: '你'
-
-    // Test Case 2: Invalid UTF-8 string
-    char invalidUtf8String[] = "Invalid \xE3\x28\xA1 String";
-    int index2 = 2;  // Index inside the invalid character sequence
-    char result2 = my_utf8_charat(invalidUtf8String, index2);
-    printf("Test Case 2: %c\n", result2);  // Expected output: '\0' (Invalid UTF-8)
-
-    // Test Case 3: Index out of bounds
-    char string3[] = "Test";
-    int index3 = 10;  // Index outside the string length
-    char result3 = my_utf8_charat(string3, index3);
-    printf("Test Case 3: %c\n", result3);  // Expected output: '\0' (Invalid index)
-
-    return 0;
-}
+//int main() {
+//
+//    my_utf8_encode(hex, binary);
+//    // Test Case 1: Valid UTF-8 string
+//    char utf8String[] = "Hello, 你好, こんにちは";
+//    int index1 = 8;  // Index of the character '你'
+//    char result1 = my_utf8_charat(utf8String, index1);
+//    printf("Test Case 1: %c\n", result1);  // Expected output: '你'
+//
+//    // Test Case 2: Invalid UTF-8 string
+//    char invalidUtf8String[] = "Invalid \xE3\x28\xA1 String";
+//    int index2 = 2;  // Index inside the invalid character sequence
+//    char result2 = my_utf8_charat(invalidUtf8String, index2);
+//    printf("Test Case 2: %c\n", result2);  // Expected output: '\0' (Invalid UTF-8)
+//
+//    // Test Case 3: Index out of bounds
+//    char string3[] = "Test";
+//    int index3 = 10;  // Index outside the string length
+//    char result3 = my_utf8_charat(string3, index3);
+//    printf("Test Case 3: %c\n", result3);  // Expected output: '\0' (Invalid index)
+//
+//    return 0;
+//}
 
 //int main() {
 //    // Example UTF-8 strings
@@ -681,10 +688,11 @@ int main() {
 //
 //    return 0;
 //}
-//int main(void) {
+int main(void) {
 //    char binary[MAX] = {0}; // Initialize array with zeros
-//    const char* hex = "12\\u12345qqq112";
-//    my_utf8_encode(hex, binary);
+//char binary[MAX] = {0};
+//const char* hex = "12\\u05d7\\u05e0qqq112";
+//my_utf8_encode(hex, binary);
 //    printf("\noutput= %s", binary);
 //    //codepointToUTF(hex3);
 //    //unsigned char *inputString = (unsigned char *)"00100100";
@@ -694,5 +702,5 @@ int main() {
 ////    int len = checkCharLength((const unsigned char *) character);
 ////    //printBinaryEquivalent((const unsigned char *) character);
 ////    printf("Length of character is %d", len);
-//    return 0;
-//}
+   return 0;
+}
