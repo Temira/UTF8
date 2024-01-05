@@ -22,6 +22,7 @@ int isValidHexChar(char c);
 int my_utf8_encode(char *input, char *output);
 int lengthString(const char *str);
 int my_utf8_check(char *string);
+char my_utf8_charat(char *string, int index);
 
 
 
@@ -600,19 +601,68 @@ int my_utf8_strlen(char *string){
     return length;
 }
 
+char my_utf8_charat(char *string, int index){
+    //check that the string is valid utf8
+    if (!my_utf8_check(string)) {
+        return '\0'; // Invalid UTF-8
+    }
+    //check that index is inside the string
+    if (!(my_utf8_strlen(string)>index)) {
+        return '\0'; // Invalid UTF-8
+    }
+    int count = 0;
+    //basically apply the same principle of my_utf8_strlen
+    while(*string){
+        if (count == index && isUtf8_StartByte(*string)) {
+            return *string;
+        }
+        if (isUtf8_StartByte(*string)) {
+            //increment character counter
+            count ++;
+            //skip the continuation bytes
+            int plus = checkCharLength((const unsigned char *) string);
+            string += plus;
+        }
+        else{
+            string++; //next character
+        }
+    } return '\0';
+}
 int main() {
-    // Example UTF-8 strings
-    const char utf8String1[] = "Hello, 世界!";  // Length: 10 characters
-    const char utf8String2[] = "\xd0\x98\xc2\xa3\xf0\x90\x8D\x88";    // Length: 11 characters
-    const char utf8String3[] = "UTF-8 🌍";        // Length: 7 characters
+    // Test Case 1: Valid UTF-8 string
+    char utf8String[] = "Hello, 你好, こんにちは";
+    int index1 = 8;  // Index of the character '你'
+    char result1 = my_utf8_charat(utf8String, index1);
+    printf("Test Case 1: %c\n", result1);  // Expected output: '你'
 
-    // Test the function with different UTF-8 strings
-    printf("Length of UTF-8 string 1: %d\n", my_utf8_strlen(utf8String1));
-    printf("Length of UTF-8 string 2: %d\n", my_utf8_strlen(utf8String2));
-    printf("Length of UTF-8 string 3: %d\n", my_utf8_strlen(utf8String3));
+    // Test Case 2: Invalid UTF-8 string
+    char invalidUtf8String[] = "Invalid \xE3\x28\xA1 String";
+    int index2 = 2;  // Index inside the invalid character sequence
+    char result2 = my_utf8_charat(invalidUtf8String, index2);
+    printf("Test Case 2: %c\n", result2);  // Expected output: '\0' (Invalid UTF-8)
+
+    // Test Case 3: Index out of bounds
+    char string3[] = "Test";
+    int index3 = 10;  // Index outside the string length
+    char result3 = my_utf8_charat(string3, index3);
+    printf("Test Case 3: %c\n", result3);  // Expected output: '\0' (Invalid index)
 
     return 0;
 }
+
+//int main() {
+//    // Example UTF-8 strings
+//    const char utf8String1[] = "Hello, 世界!";  // Length: 10 characters
+//    const char utf8String2[] = "\xd0\x98\xc2\xa3\xf0\x90\x8D\x88";    // Length: 3 characters
+//    const char utf8String3[] = "UTF-8 🌍";        // Length: 7 characters
+//
+//    // Test the function with different UTF-8 strings
+//    printf("Length of UTF-8 string 1: %d\n", my_utf8_strlen(utf8String1));
+//    printf("Length of UTF-8 string 2: %d\n", my_utf8_strlen(utf8String2));
+//    printf("Length of UTF-8 string 3: %d\n", my_utf8_strlen(utf8String3));
+//
+//    return 0;
+//}
 //int main() {
 //    char validUtf8[] = "Hello, 世界!"; // Valid UTF-8 string
 //    char invalidUtf8[] = "Hello, \xE5\x95!"; // Invalid UTF-8 string
