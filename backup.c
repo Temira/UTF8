@@ -344,3 +344,38 @@
 //////    printf("Length of character is %d", len);
 //   return 0;
 //}
+//
+//char* my_utf8_charat(char* string, int index) {
+//    // Check that the string is valid UTF-8
+//    if (my_utf8_check(string) == -1) {
+//        return NULL; // Invalid UTF-8
+//    }
+//
+//    int count = 0;
+//    int start = 0;
+//
+//    while (*string) {
+//        if (isUtf8_StartByte(*string)) {
+//            if (count == index) {
+//                // Find the end of the character
+//                int end = start;
+//                while (isUtf8_ContinuationByte(string[end])) {
+//                    end++;
+//                }
+//
+//                // Return a pointer to the start of the character
+//                return string + start;
+//            }
+//            count++;
+//            start = 0; // Reset start to 0, not string - 1
+//        }
+//        int charLength = checkCharLength((const unsigned char*)string);
+//        string += charLength;
+//        if (count > index) {
+//            return NULL; // Index not found or invalid UTF-8
+//        }
+//    }
+//
+//    return NULL; // Index not found or invalid UTF-8
+//}
+//
