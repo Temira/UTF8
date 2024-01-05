@@ -272,3 +272,75 @@
 //    return 0;
 //}
 //
+
+//int main() {
+//
+//    my_utf8_encode(hex, binary);
+//    // Test Case 1: Valid UTF-8 string
+//    char utf8String[] = "Hello, 你好, こんにちは";
+//    int index1 = 8;  // Index of the character '你'
+//    char result1 = my_utf8_charat(utf8String, index1);
+//    printf("Test Case 1: %c\n", result1);  // Expected output: '你'
+//
+//    // Test Case 2: Invalid UTF-8 string
+//    char invalidUtf8String[] = "Invalid \xE3\x28\xA1 String";
+//    int index2 = 2;  // Index inside the invalid character sequence
+//    char result2 = my_utf8_charat(invalidUtf8String, index2);
+//    printf("Test Case 2: %c\n", result2);  // Expected output: '\0' (Invalid UTF-8)
+//
+//    // Test Case 3: Index out of bounds
+//    char string3[] = "Test";
+//    int index3 = 10;  // Index outside the string length
+//    char result3 = my_utf8_charat(string3, index3);
+//    printf("Test Case 3: %c\n", result3);  // Expected output: '\0' (Invalid index)
+//
+//    return 0;
+//}
+
+//int main() {
+//    // Example UTF-8 strings
+//    const char utf8String1[] = "Hello, 世界!";  // Length: 10 characters
+//    const char utf8String2[] = "\xd0\x98\xc2\xa3\xf0\x90\x8D\x88";    // Length: 3 characters
+//    const char utf8String3[] = "UTF-8 🌍";        // Length: 7 characters
+//
+//    // Test the function with different UTF-8 strings
+//    printf("Length of UTF-8 string 1: %d\n", my_utf8_strlen(utf8String1));
+//    printf("Length of UTF-8 string 2: %d\n", my_utf8_strlen(utf8String2));
+//    printf("Length of UTF-8 string 3: %d\n", my_utf8_strlen(utf8String3));
+//
+//    return 0;
+//}
+//int main() {
+//    char validUtf8[] = "Hello, 世界!"; // Valid UTF-8 string
+//    char invalidUtf8[] = "Hello, \xE5\x95!"; // Invalid UTF-8 string
+//
+//    if (my_utf8_check(validUtf8)) {
+//        printf("The string is a valid UTF-8.\n");
+//    } else {
+//        printf("The string is not a valid UTF-8.\n");
+//    }
+//
+//    if (my_utf8_check(invalidUtf8)) {
+//        printf("The string is a valid UTF-8.\n");
+//    } else {
+//        printf("The string is not a valid UTF-8.\n");
+//    }
+//
+//    return 0;
+//}
+//int main(void) {
+////    char binary[MAX] = {0}; // Initialize array with zeros
+////char binary[MAX] = {0};
+////const char* hex = "12\\u05d7\\u05e0qqq112";
+////my_utf8_encode(hex, binary);
+////    printf("\noutput= %s", binary);
+////    //codepointToUTF(hex3);
+////    //unsigned char *inputString = (unsigned char *)"00100100";
+////    //char outputString[16] = {0};
+////    //unsigned char* st = "00100100";
+////    //binaryToHex(inputString, outputString);
+//////    int len = checkCharLength((const unsigned char *) character);
+//////    //printBinaryEquivalent((const unsigned char *) character);
+//////    printf("Length of character is %d", len);
+//   return 0;
+//}

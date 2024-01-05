@@ -3,13 +3,13 @@ project(untitled1 C)
 
 set(CMAKE_C_STANDARD 11)
 
-add_executable(untitled1 main.c
-        playground.c
-        newnew.c
-        necessary.c
-        HERE.c
-        NEWW.c
-        2.c
-        3.c
+add_executable(untitled1 tryingSomething.c
+        tryingSomething5.c
+        tryingSomething6.c
+        tryingSomething2.c
+        tryingSomething3.c
+        tryingSomething4.c
+        backup.c
+        Main.c
         testing.cpp
 )
