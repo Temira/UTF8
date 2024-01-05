@@ -15,8 +15,12 @@ int fillTemp2(unsigned char * binaryNum, unsigned char * newNumber); //fills two
 int fillTemp3(unsigned char * binaryNum, unsigned char * newNumber); //fills three byte template
 int fillTemp4(unsigned char * binaryNum, unsigned char * newNumber); // fills four byte template
 int codepointToUTF(const unsigned char *stri, const char *output); //converts unicode codepoint to equivalent UTF-8 hex
-int stripLeadingZeros(unsigned char *binaryString); //
+int stripLeadingZeros(unsigned char *binaryString);
+int addLeadingZeros(unsigned char *binaryString, int targetLength);
 int binaryToHex(unsigned char  *inputString, char *outputString);
+int isValidHexChar(char c);
+int my_utf8_encode(char *input, char *output);
+int lengthString(const char *str);
 
 
 
@@ -460,6 +464,7 @@ int binaryToHex(unsigned char  *inputString, char *outputString) {
         printf("Result String: %s\n", outputString);
         return 0;
 }
+
 int isValidHexChar(char c) {
     return ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'F') || (c >= 'a' && c <= 'f')) ? 1 : 0;
 }
@@ -493,7 +498,8 @@ int my_utf8_encode(char *input, char *output) {
 
                 // Print the entire Unicode string
                 printf("%s", unicodeString);
-                codepointToUTF(unicodeString, output);
+                codepointToUTF(unicodeString, &output[outputIndex]);
+                outputIndex += lengthString(unicodeString);
                 printf("here");
 
             } else {
@@ -504,26 +510,22 @@ int my_utf8_encode(char *input, char *output) {
             i += unicodeLength; // Move to the next character after the Unicode point
 
         } else {
-            output[i] = input[i];
-            //outputIndex++;
-            // Process the current character
-            printf("%c", input[i]);
+            output[outputIndex] = input[i];
+            printf("\n%c", input[i]);
             i++;
+            outputIndex++;
+            printf("\nout %s",output);
         }
-    printf("out %s",output);
+    printf("\n real out %s",output);
     }
+    printf("\n real real real out %s",output);
     return 0;
 }
 
 
 int main(void) {
     char binary[MAX] = {0}; // Initialize array with zeros
-    const char* hex = "\\u12345qqq112";
-    //codepointToUTF(hex, binary);
-    //printf("\noutput= %s", binary);
-//    hexToBinary(hex3, binary);
-    //const char *character = "!";
-    //hexToBinary(hex3, binary);
+    const char* hex = "12\\u12345qqq112";
     my_utf8_encode(hex, binary);
     printf("\noutput= %s", binary);
     //codepointToUTF(hex3);
