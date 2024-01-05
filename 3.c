@@ -5,7 +5,7 @@ int isUtf8_StartByte(unsigned char byte); //determines if a byte is a valid star
 int isUtf8_ContinuationByte(unsigned char byte); //determines if a byte is a valid continuation byte
 int hexToBinary(const char *hexa, unsigned char *binarynum); //converts hex to binary (duh)
 void printBinaryEquivalent(const unsigned char *stri);
-int checkCharLength(const unsigned char *stri); //determines how many UTF-8 Hex pairs there will be based on start byte
+int checkCharLength(char *stri); //determines how many UTF-8 Hex pairs there will be based on start byte
 int my_utf8_strlen(char *string); //uses start bytes
 int lengthBinary(unsigned char *string); //uses nul to locate end of string
 int binaryToDecimal(unsigned const char *binary); //converts binary to decimal
@@ -21,6 +21,7 @@ int binaryToHex(unsigned char  *inputString, char *outputString);
 int isValidHexChar(char c);
 int my_utf8_encode(char *input, char *output);
 int lengthString(const char *str);
+int my_utf8_check(char *string);
 
 
 
@@ -392,7 +393,7 @@ int codepointToUTF(const unsigned char *stri, const char *output) {
     return 0;
 };
 
-int binaryToHex(unsigned char  *inputString, char *outputString) {
+int binaryToHex(unsigned char *inputString, char *outputString) {
         int len = lengthBinary(inputString);
         int resultIndex = 0;
 
@@ -522,19 +523,126 @@ int my_utf8_encode(char *input, char *output) {
     return 0;
 }
 
+// Function to determine the length of a UTF-8 character based on its start byte
+int checkCharLength(char *stri) {
+    int length;
+    if ((stri[0] & 0x80) == 0) {
+        length = 1; //One byte
+    } else if ((stri[0] & 0xE0) == 0xC0) {
+        length = 2; // Two bytes
+    } else if ((stri[0] & 0xF0) == 0xE0) {
+        length = 3; // Three bytes
+    } else if ((stri[0] & 0xF8) == 0xF0) {
+        length = 4; // Four bytes
+    } else {
+        length = -1; // Error
+    }
+    //printf("Number of Bytes in Char: %d ", length);
+    return length;
+}
 
-int main(void) {
-    char binary[MAX] = {0}; // Initialize array with zeros
-    const char* hex = "12\\u12345qqq112";
-    my_utf8_encode(hex, binary);
-    printf("\noutput= %s", binary);
-    //codepointToUTF(hex3);
-    //unsigned char *inputString = (unsigned char *)"00100100";
-    //char outputString[16] = {0};
-    //unsigned char* st = "00100100";
-    //binaryToHex(inputString, outputString);
-//    int len = checkCharLength((const unsigned char *) character);
-//    //printBinaryEquivalent((const unsigned char *) character);
-//    printf("Length of character is %d", len);
+// Function to check if a byte is the start of a UTF-8 character
+int isUtf8_StartByte(unsigned char byte) {
+    return (byte & 0xC0) != 0x80;
+}
+
+// Function to check if a byte is a continuation byte in a UTF-8 character
+int isUtf8_ContinuationByte(unsigned char byte) {
+    return (byte & 0xC0) == 0x80;
+}
+
+int my_utf8_check(char *string) {
+    int strLength = lengthString(string);
+    int charLength;
+
+    for (int i = 0; i < strLength; i++) {
+        charLength = checkCharLength(string + i);
+
+        if (charLength == 1) {
+            if (!isUtf8_StartByte(string[i])) {
+                return 0; // Invalid
+            }
+        }
+        else if (charLength >= 2 && charLength <= 4) {
+            for (int j = 1; j < charLength; j++) {
+                if (!isUtf8_ContinuationByte(string[i + j])) {
+                    return 0; // Invalid
+                }
+            }
+            i += charLength - 1; //bc loop already increments i
+        }
+        else {
+            return 0; // Invalid
+        }
+    }
+    return 1; // Valid
+}
+//checks the string length (how many characters there are)
+int my_utf8_strlen(char *string){
+    int length = 0;
+    while(*string){
+        //first, make sure that it is a valid utf8 string
+        if (!my_utf8_check(string)) {
+            return -1; // Invalid UTF-8
+        }
+        //count start bytes to determine string length
+        if (isUtf8_StartByte(*string)) {
+            length ++;
+            int plus = checkCharLength((const unsigned char *) string);
+            //skip the continuation bytes
+            string += plus;
+        }
+        //skip continuation bytes
+        else {
+            return -1;
+        }
+    }
+    return length;
+}
+
+int main() {
+    // Example UTF-8 strings
+    const char utf8String1[] = "Hello, 世界!";  // Length: 10 characters
+    const char utf8String2[] = "\xd0\x98\xc2\xa3\xf0\x90\x8D\x88";    // Length: 11 characters
+    const char utf8String3[] = "UTF-8 🌍";        // Length: 7 characters
+
+    // Test the function with different UTF-8 strings
+    printf("Length of UTF-8 string 1: %d\n", my_utf8_strlen(utf8String1));
+    printf("Length of UTF-8 string 2: %d\n", my_utf8_strlen(utf8String2));
+    printf("Length of UTF-8 string 3: %d\n", my_utf8_strlen(utf8String3));
+
     return 0;
 }
+//int main() {
+//    char validUtf8[] = "Hello, 世界!"; // Valid UTF-8 string
+//    char invalidUtf8[] = "Hello, \xE5\x95!"; // Invalid UTF-8 string
+//
+//    if (my_utf8_check(validUtf8)) {
+//        printf("The string is a valid UTF-8.\n");
+//    } else {
+//        printf("The string is not a valid UTF-8.\n");
+//    }
+//
+//    if (my_utf8_check(invalidUtf8)) {
+//        printf("The string is a valid UTF-8.\n");
+//    } else {
+//        printf("The string is not a valid UTF-8.\n");
+//    }
+//
+//    return 0;
+//}
+//int main(void) {
+//    char binary[MAX] = {0}; // Initialize array with zeros
+//    const char* hex = "12\\u12345qqq112";
+//    my_utf8_encode(hex, binary);
+//    printf("\noutput= %s", binary);
+//    //codepointToUTF(hex3);
+//    //unsigned char *inputString = (unsigned char *)"00100100";
+//    //char outputString[16] = {0};
+//    //unsigned char* st = "00100100";
+//    //binaryToHex(inputString, outputString);
+////    int len = checkCharLength((const unsigned char *) character);
+////    //printBinaryEquivalent((const unsigned char *) character);
+////    printf("Length of character is %d", len);
+//    return 0;
+//}
